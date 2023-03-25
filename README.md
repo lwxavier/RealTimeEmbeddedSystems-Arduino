@@ -7,8 +7,8 @@ This project aims to help patients with their rehab exercises, specifically for 
 By providing a means to track the patient's progress, our project aims to motivate them throughout the process.
 
 
-Items needed:
-* Each Machine - //TS - TinyScreen// * 
+* Items needed:
+(Each Machine - //TS - TinyScreen//)
 
 TinyScreen+ (This is what we will be programming)
 
@@ -31,6 +31,7 @@ Lithium ion battery (for shifting power source from laptop (5V) to Portable Char
 Portable Charger
 
 
-Setup:
+* Setup:
+
 As shown in the included picture
 
