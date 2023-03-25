@@ -9,6 +9,7 @@ By providing a means to track the patient's progress, our project aims to motiva
 
 Items needed:
 - Each Machine - //TS - TinyScreen//
+
 TinyScreen+ (This is what we will be programming)
 TS WiFi TinyShield
 TS Servo Controller
