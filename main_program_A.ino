@@ -1,3 +1,18 @@
+/*
+Loading Screen algo:
+http://www.geekmomprojects.com/tinyscreen-case-with-buttons/
+
+Code created by:
+Xavier Lee
+26 March 2023
+
+github:
+https://github.com/lwxavier/RealTimeEmbeddedSystems-Arduino
+
+*/
+
+
+
 
 // Define a constant value ALPHA for use in pixel collision detection.
 const uint16_t ALPHA = 0x1111;
@@ -1322,9 +1337,7 @@ void main_program() {
       //ThingSpeak.setField(patientInputFieldLOAD, field2Value);
 
 
-      int temp_status = 0;
-
-      temp_status = userStatus;
+      int temp_status = userStatus;
 
       delay(15000);
 
