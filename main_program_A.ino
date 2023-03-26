@@ -389,18 +389,21 @@ int fall_speed = 3;
 
 
 // for flapping with ldr
-unsigned long interval_time = 1000; //500ms before flapping can happen again 
+unsigned long interval_time = 1000; //1000ms before flapping can happen again 
 unsigned long flap_millis = 0; 
 unsigned long clum_millis = 0;
 
+#define GAME_DURATION 60000 // time in ms. 60 seconds game time
+
+float RPMmultiplier = RPMmultiplier = (60000 / GAME_DURATION); //60000ms in a minute
 
 
 
 //RPM variables
-const int NUM_READINGS = 5;  // the number of readings to use for calculating RPM
-const int RPM_PERIOD_MS = 1000;  // the time period (in ms) for calculating RPM
-unsigned long lastReadings[NUM_READINGS] = {0};  // an array to store the last few readings
-int numReadings = 0;  // the number of readings in the lastReadings array
+// const int NUM_READINGS = 60;  // the number of readings to use for calculating RPM
+// const int RPM_PERIOD_MS = 1000;  // the time period (in ms) for calculating RPM
+// unsigned long lastReadings[NUM_READINGS] = {0};  // an array to store the last few readings
+int numRevs = 0;  // the number of readings in the lastReadings array
 int patientRPM = 0;   // the global variable for storing the patient's RPM
 
 
@@ -491,7 +494,7 @@ int getInput(){ //interval_time, flap_millis, clum_millis
     //also prevents 'debouncing'
     int clum_millis = millis();
 
-    if (clum_millis - flap_millis > interval_time){ //interval_time is 500ms
+    if (clum_millis - flap_millis > interval_time){ //interval_time is 1000ms
       flap_millis = millis();
 
       //for testing
@@ -1308,8 +1311,6 @@ void main_program() {
       resultsScreen();
 
 
-      patientRPM = patientRPM / 100;
-
       float field1Value = patientRPM;
       //float field2Value = load_value;
 
@@ -1350,7 +1351,7 @@ void main_program() {
 
         //send_score = ThingSpeak.writeField(patientChannelNumber, patientInputFieldScore, final_score, patientWriteAPIKey);
         
-        while (send_score != 200){
+        while (send_score != 200){ //attempts to send the score every 2 seconds
           SerialUSB.println("Problem updating channel. HTTP error code " + String(send_score));
           delay(2000);
 
@@ -1938,7 +1939,7 @@ void x15s_elapsed() { //x15s_flag  //remember to reset flag to 0 when done
 //used only for the game
 void x60s_elapsed() { //x60s_flag  //remember to reset flag to 0 when done
   unsigned long currentMillis = millis();
-  if (currentMillis - (previousMillis + time_paused) >= 60000) { // check if game time has elapsed
+  if (currentMillis - (previousMillis + time_paused) >= GAME_DURATION) { // check if game time has elapsed
     previousMillis = currentMillis; // reset the previousMillis variable
     x60s_flag = 1; // set the flag to 1
   }
@@ -2112,6 +2113,18 @@ void pause_sequence(){ //resume_flag, x500ms_flag
 
 void updateRPM() {
   // read the LDR value and calculate the time elapsed since the last reading
+  int ldrValue = analogRead(ldrPin);  
+  if (ldrValue - room_ldrVal > 150){  
+    numRevs += 1;    
+  }
+
+  patientRPM = numRevs * RPMmultiplier;// should return a whole number
+}
+
+
+/*
+void updateRPM() {
+  // read the LDR value and calculate the time elapsed since the last reading
   int ldrValue = analogRead(ldrPin);
   unsigned long timeElapsed;
   
@@ -2127,13 +2140,15 @@ void updateRPM() {
     if (numReadings >= NUM_READINGS) {
       float timePerRevolution = (float)RPM_PERIOD_MS / NUM_READINGS;
       float revolutionsPerTime = timePerRevolution / timeElapsed;
-      patientRPM = (int)(revolutionsPerTime * 60000);
+      patientRPM = (int)(revolutionsPerTime * 60);
     }
 
 
   }
 
 }
+*/
+
 
 
 
@@ -2188,7 +2203,7 @@ int getWordWidth(String theWord) { // display.getPrintWidth() does not accept va
 }
 
 //------------------------------------------------------------------------------------------------
-
+//1000
 
 
 void wrapText(String text, int x, int y) {
