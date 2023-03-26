@@ -1343,7 +1343,7 @@ void main_program() {
 
 
       //change to temp_status == 0 to send only if game finishes successfully
-      if (temp_status > -1){ //send user's results if finished exercise successfully
+      if (temp_status > -1){ //send user's results if finished exercise
         // //for testing
         patientInputFieldScore = 1;
         // final_score = 20;
@@ -1369,6 +1369,9 @@ void main_program() {
       display.println("\nGetting ready..."); // This is centralised
       SerialUSB.println("\nGetting ready");
 
+      //initialise RPM variables back to 0
+      patientRPM = 0;
+      numRevs = 0;
 
       //checks if can restart Main Cycle
       delay(15000);    
