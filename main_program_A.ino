@@ -4,7 +4,6 @@ const uint16_t ALPHA = 0x1111;
 
 // Include the required libraries and header file.
 #include "flappyBirdSprites.h"
-
 #include <TinyScreen.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -1875,6 +1874,11 @@ void pause_sequence(){ //resume_flag, x500ms_flag, gameOver_flag
         resume_flag = 1;
         SerialUSB.println("\nResuming");
         
+        display.setCursor(48 - (display.getPrintWidth("Resuming") / 2), 32 - (display.getFontHeight() / 2));
+        display.println("\nResuming"); // This is centralised
+
+        delay(10000);
+
         countdown_5s();
          
 
